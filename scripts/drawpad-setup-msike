@@ -9,6 +9,6 @@ SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
 #
 "${SCRIPT_DIR}/drawpad-setup"	\
 	--no-monitor \
-	--gromit-hotkey "KP_Multiply"
+	--gromit-hotkey "Home"
 
 
