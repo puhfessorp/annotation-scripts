@@ -146,20 +146,12 @@ done
 log "Finished parsing CLI arguments"
 
 
-#	Grab the pen's proper ID and map it to the specified monitor (if applicable)
+#	Grab the pen's proper ID
 PEN_ID=`xinput | grep "$PEN_NAME" | cut -f 2 | cut -c 4-5`
 log "Pen's proper ID: $PEN_ID"
-if [ "$MONITOR" != "" ];then
-	log "Asking xinput to map pen #$PEN_ID to monitor $MONITOR"
-	xinput map-to-output "$PEN_ID" "$MONITOR" || die "xinput failed to map pen $PEN_ID to monitor $MONITOR, for some reason!"
-	log "Done asking xinput to map pen #$PEN_ID to monitor $MONITOR"
-else
-	log "No monitor specified; Won't ask xinput to map pen to any particular monitor"
-fi
 
-
-# Hint: use xev to show key codes
-# /usr/include/X11/keysymdef.h
+#	Hint: use xev to show key codes
+#	/usr/include/X11/keysymdef.h
 log "Configuring pad buttons"
 #xsetwacom list parameters
 #xsetwacom list modifiers
@@ -169,11 +161,20 @@ xsetwacom --set "$PAD_NAME" Button 2 key +control +shift || die "Failed to set p
 xsetwacom --set "$PAD_NAME" Button 3 key "$GROMIT_HOTKEY" || die "Failed to set pad Button 3 to: $GROMIT_HOTKEY" # Gromit activate/deactivate key
 xsetwacom --set "$PAD_NAME" Button 8 key +shift +"$GROMIT_HOTKEY" -shift -"$GROMIT_HOTKEY" || die "Failed to set pad Button 8 to SHIFT+${GROMIT_HOTKEY}" # Gromit clear screen
 
-# Setup pen buttons
+#	Setup pen buttons
 log "Configuring pen buttons"
 xsetwacom --set "$PEN_NAME" Button 1 || die "Failed to set pen Button 1 to default"		# Button 1 is actually pressing the pen down on the pad
 xsetwacom --set "$PEN_NAME" Button 2 key +shift  || die "Failed to set pen Button 2 to SHIFT"	# Button 2 is main button click on pen
 xsetwacom --set "$PEN_NAME" Button 3 || die "Failed to set pen Button 3 to default"	# Button 3 is back button click on pen
+
+#	Map the pen to the specified monitor (if applicable)
+if [ "$MONITOR" != "" ];then
+	log "Asking xinput to map pen #$PEN_ID to monitor $MONITOR"
+	xinput map-to-output "$PEN_ID" "$MONITOR" || die "xinput failed to map pen $PEN_ID to monitor $MONITOR, for some reason!"
+	log "Done asking xinput to map pen #$PEN_ID to monitor $MONITOR"
+else
+	log "No monitor specified; Won't ask xinput to map pen to any particular monitor"
+fi
 
 
 #
