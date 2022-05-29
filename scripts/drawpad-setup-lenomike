@@ -1,0 +1,14 @@
+#!/bin/bash
+
+
+#
+SCRIPT_PATH=$(readlink -f "$0")
+SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
+
+
+#
+"${SCRIPT_DIR}/drawpad-setup"	\
+	--monitor "HDMI-1" \
+	--gromit-hotkey "KP_Multiply"
+
+
